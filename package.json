@@ -1,7 +1,7 @@
 {
   "name": "@lvin/pico",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "type": "module",
   "files": [
     "dist"
@@ -16,6 +16,7 @@
     }
   },
   "scripts": {
+    "lint": "tsc",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
