@@ -1,24 +1,33 @@
-import { useEffect } from './Hooks/useEffect';
-import { useMemo } from './Hooks/useMemo';
-import { useState } from './Hooks/useState';
-import { PicoState } from './picoState';
-import { PicoElement, PicoTextElement, Fiber } from './types';
+import { useEffect } from "./Hooks/useEffect";
+import { useMemo } from "./Hooks/useMemo";
+import { useState } from "./Hooks/useState";
+import { PicoState } from "./picoState";
+import { PicoElement, PicoTextElement, Fiber } from "./types";
 
-export { createPicoElement, render, useState, useEffect, useMemo, createRoot };
-
-function createPicoElement(type: string, props?: any, ...children: any[] | string[]): PicoElement {
+export { createPicoElement, useState, useEffect, useMemo, createRoot, Pico };
+const Pico = {
+  createPicoElement,
+  createRoot,
+};
+function createPicoElement(
+  type: string,
+  props?: any,
+  ...children: any[] | string[]
+): PicoElement {
   return {
     type,
     props: {
       ...props,
-      children: children.map((e) => (typeof e === 'object' ? e : createTextElement(e))),
+      children: children.map((e) =>
+        typeof e === "object" ? e : createTextElement(e)
+      ),
     },
   };
 }
 
 function createTextElement(text: string | number): PicoTextElement {
   return {
-    type: 'TEXT_ELEMENT',
+    type: "TEXT_ELEMENT",
     props: {
       nodeValue: text,
       children: [],
@@ -69,14 +78,15 @@ function workLoop(deadline: IdleDeadline) {
 
 function createDom(fiber: Fiber) {
   const dom =
-    fiber.type === 'TEXT_ELEMENT'
-      ? document.createTextNode('')
+    fiber.type === "TEXT_ELEMENT"
+      ? document.createTextNode("")
       : !(fiber.type instanceof Function)
       ? document.createElement(fiber.type)
       : null;
-  if (dom === null) throw `fiber of ${fiber.type}, should not be able to be called here`;
+  if (dom === null)
+    throw `fiber of ${fiber.type}, should not be able to be called here`;
   Object.keys(fiber.props)
-    .filter((k) => k !== 'children')
+    .filter((k) => k !== "children")
     .forEach((k) => (dom[k] = fiber.props[k]));
   updateProperties(dom, {}, fiber.props);
   return dom;
@@ -134,7 +144,7 @@ function reconcileChildren(fiber: Fiber, elements: any) {
         dom: oldFiber ? oldFiber.dom : null,
         parent: fiber,
         alternate: oldFiber,
-        effectTag: 'UPDATE',
+        effectTag: "UPDATE",
       };
     }
     if (element && !sameType) {
@@ -145,11 +155,11 @@ function reconcileChildren(fiber: Fiber, elements: any) {
         dom: null,
         parent: fiber,
         alternate: null,
-        effectTag: 'PLACE',
+        effectTag: "PLACE",
       };
     }
     if (oldFiber && !sameType) {
-      oldFiber.effectTag = 'DELETE';
+      oldFiber.effectTag = "DELETE";
       PicoState.deletions?.push(oldFiber);
     }
 
@@ -184,27 +194,33 @@ function commitWork(fiber: Fiber | null) {
     domParentFiber = domParentFiber.parent;
   }
   const parentDom = domParentFiber ? domParentFiber.dom : null;
-  if (fiber.effectTag === 'PLACE' && fiber.dom != null && parentDom) {
+  if (fiber.effectTag === "PLACE" && fiber.dom != null && parentDom) {
     parentDom.appendChild(fiber.dom);
   }
-  if (fiber.effectTag === 'DELETE' && parentDom) commitDeletion(fiber, parentDom);
-  if (fiber.effectTag === 'UPDATE' && fiber.alternate && fiber.dom != null)
+  if (fiber.effectTag === "DELETE" && parentDom)
+    commitDeletion(fiber, parentDom);
+  if (fiber.effectTag === "UPDATE" && fiber.alternate && fiber.dom != null)
     updateProperties(fiber.dom, fiber.alternate.props, fiber.props);
   commitWork(fiber.child);
   commitWork(fiber.sibling);
 }
 
-const isProperty = (key: string) => key !== 'children' && !isEvent(key);
-const isNew = (prev: Fiber['props'], next: Fiber['props']) => (key: string) => prev[key] !== next[key];
-const isGone = (next: Fiber['props']) => (key: string) => !(key in next);
-const isEvent = (key: string) => key.startsWith('on');
+const isProperty = (key: string) => key !== "children" && !isEvent(key);
+const isNew = (prev: Fiber["props"], next: Fiber["props"]) => (key: string) =>
+  prev[key] !== next[key];
+const isGone = (next: Fiber["props"]) => (key: string) => !(key in next);
+const isEvent = (key: string) => key.startsWith("on");
 
-function commitDeletion(fiber: Fiber, domParent: NonNullable<Fiber['dom']>) {
+function commitDeletion(fiber: Fiber, domParent: NonNullable<Fiber["dom"]>) {
   if (fiber.dom) domParent.removeChild(fiber.dom);
   else if (fiber.child) commitDeletion(fiber.child, domParent);
 }
 
-function updateProperties(dom: HTMLElement | Text, prevProps: Fiber['props'], nextProps: Fiber['props']) {
+function updateProperties(
+  dom: HTMLElement | Text,
+  prevProps: Fiber["props"],
+  nextProps: Fiber["props"]
+) {
   //remove old event handlers from the dom
   Object.keys(prevProps)
     .filter(isEvent)
@@ -227,7 +243,7 @@ function updateProperties(dom: HTMLElement | Text, prevProps: Fiber['props'], ne
   Object.keys(prevProps)
     .filter(isProperty)
     .filter(isGone(nextProps))
-    .forEach((e) => (dom[e] = ''));
+    .forEach((e) => (dom[e] = ""));
 
   //updates new props
   Object.keys(nextProps)
