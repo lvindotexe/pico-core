@@ -23,7 +23,7 @@ pnpm i -D @types/react @vitejs/plugin-react
 
 create a `vite.config.ts`
 
-```
+```js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -34,23 +34,21 @@ export default defineConfig({
     }),
   ],
 });
-
 ```
 
 replace `main.ts` with `main.tsx` run `npm run dev` and you should be good to go
 
 ```jsx
-import { useState, createRoot, useMemo, createPicoElement } from '@lvin/pico';
+import { useState, createRoot, useMemo, createPicoElement } from '@lvindotexe/pico';
 
 /** @jsx createPicoElement */
-function Counter({ initial, incrementBy }: { initial: number; incrementBy: number }) {
-  const [state, setState] = useState(initial);
-  const result = useMemo(() => state + incrementBy, [state]);
+function Counter() {
+  const [state, setState] = useState(1);
 
   return (
     <div>
       <h1 className="text-2xl font-bold">
-        The sum is {state} and {result}
+        The count is {state}
       </h1>
       <button className="font-bold" onclick={() => setState((prev) => prev + 1)}>
         increment
@@ -59,17 +57,8 @@ function Counter({ initial, incrementBy }: { initial: number; incrementBy: numbe
   );
 }
 
-function App() {
-  const [initial, incrementBy] = [1, 2];
-  return (
-    <div>
-      <Counter initial={initial} incrementBy={incrementBy} />
-    </div>
-  );
-}
-
 const root = document.getElementById('app')!;
-createRoot(root).render(<App />);
+createRoot(root).render(<Counter/>);
 ```
 
 # Hooks
@@ -132,7 +121,7 @@ function Counter({ initial, incrementBy }: { initial: number, incrementBy: numbe
   return (
     <div>
       <h1 className="text-2xl font-bold">
-        The sum is {state} and {result}
+        {state} and {result}
       </h1>
       <button className="font-bold" onclick={() => setState((prev) => prev + 1)}>
         increment
