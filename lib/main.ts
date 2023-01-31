@@ -8,6 +8,7 @@ export { createPicoElement, useState, useEffect, useMemo, createRoot, Pico };
 const Pico = {
   createPicoElement,
   createRoot,
+  render,
 };
 function createPicoElement(
   type: string,
