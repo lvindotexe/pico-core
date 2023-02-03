@@ -5,7 +5,6 @@ I plan to publish this to npm when im done with it, and suffer a lot since i wan
 
 #### TODO
 
-- useEffect clean up function
 - useReducer and useContext
 - maybe a statemanager like zustand
 
@@ -24,13 +23,13 @@ pnpm i -D @types/react @vitejs/plugin-react
 create a `vite.config.ts`
 
 ```js
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [
     react({
-      jsxRuntime: 'classic',
+      jsxRuntime: "classic",
     }),
   ],
 });
@@ -72,7 +71,7 @@ pico only supports functional components and I've no intention to support class 
 is a reactive primitive that allows users to set variables and objects that change over time. calling the `useState` function returns a tuple that contains the value of the state, and a setter, to change the state of the value
 
 ```jsx
-import { useState, createRoot, useMemo, createPicoElement } from '@lvin/pico';
+import { useState, createRoot, useMemo, createPicoElement } from "@lvin/pico";
 
 function Counter() {
   const [state, setState] = useState(1);
@@ -81,7 +80,10 @@ function Counter() {
       <h1 className="text-2xl font-bold">
         The sum is {state} and {result}
       </h1>
-      <button className="font-bold" onclick={() => setState((prevState) => prev + 1)}>
+      <button
+        className="font-bold"
+        onclick={() => setState((prevState) => prev + 1)}
+      >
         increment
       </button>
     </div>
@@ -114,7 +116,13 @@ function Counter() {
 allowws you cache the result of a calculation between re-renders. results are only recomputed when dependancies change.
 
 ```jsx
-function Counter({ initial, incrementBy }: { initial: number, incrementBy: number }) {
+function Counter({
+  initial,
+  incrementBy,
+}: {
+  initial: number,
+  incrementBy: number,
+}) {
   const [state, setState] = useState(initial);
   const result = useMemo(() => state + incrementBy, [state]);
 
@@ -123,7 +131,10 @@ function Counter({ initial, incrementBy }: { initial: number, incrementBy: numbe
       <h1 className="text-2xl font-bold">
         {state} and {result}
       </h1>
-      <button className="font-bold" onclick={() => setState((prev) => prev + 1)}>
+      <button
+        className="font-bold"
+        onclick={() => setState((prev) => prev + 1)}
+      >
         increment
       </button>
     </div>

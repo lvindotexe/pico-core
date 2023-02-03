@@ -1,10 +1,19 @@
 import { useEffect } from "./Hooks/useEffect";
 import { useMemo } from "./Hooks/useMemo";
+import { useReducer } from "./Hooks/useReducer";
 import { useState } from "./Hooks/useState";
 import { PicoState } from "./picoState";
 import { PicoElement, PicoTextElement, Fiber } from "./types";
 
-export { createPicoElement, useState, useEffect, useMemo, createRoot, Pico };
+export {
+  createPicoElement,
+  useState,
+  useEffect,
+  useMemo,
+  createRoot,
+  useReducer,
+  Pico,
+};
 const Pico = {
   createPicoElement,
   createRoot,
