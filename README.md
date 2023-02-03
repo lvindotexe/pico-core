@@ -5,7 +5,7 @@ I plan to publish this to npm when im done with it, and suffer a lot since i wan
 
 #### TODO
 
-- useReducer and useContext
+- useContext
 - maybe a statemanager like zustand
 
 # Installation
