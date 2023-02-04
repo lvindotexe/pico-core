@@ -27,7 +27,7 @@ export const useReducer = <T, A>(
     queue: Array<Action>;
   };
 
-  const oldHook: ReducerHook =
+  const oldHook: ReducerHook | undefined =
     PicoState.wipFiber &&
     PicoState.wipFiber.alternate &&
     PicoState.wipFiber.alternate.hooks &&
@@ -37,6 +37,9 @@ export const useReducer = <T, A>(
     state: oldHook ? oldHook.state : inital,
     queue: new Array(),
   };
+
+  const actions = oldHook ? oldHook.queue : [];
+  actions.forEach((action) => (hook.state = action(hook.state)));
 
   const dispatch: Dispatch<ReducerAction<Reducer<T, A>>> = (action) => {
     const actionCallback: Action = (state) => {
