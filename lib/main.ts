@@ -5,6 +5,14 @@ import { useState } from "./Hooks/useState";
 import { PicoState } from "./picoState";
 import { PicoElement, PicoTextElement, Fiber } from "./types";
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      [elemName: string]: any;
+    }
+  }
+}
+
 export {
   createPicoElement,
   useState,
@@ -14,6 +22,7 @@ export {
   useReducer,
   Pico,
 };
+
 const Pico = {
   createPicoElement,
   createRoot,
