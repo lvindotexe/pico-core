@@ -147,31 +147,29 @@ Makes it easier to manage complex state logic when the next state is dependant o
 
 ```tsx
 import { useReducer } from "@lvindotexe/pico";
-
-const initialState = 0;
-const reducer = (state, action) => {
+function reducer(state: number, action: "inc" | "dec") {
   switch (action) {
-    case "increment":
+    case "inc":
       return state + 1;
-    case "decrement":
+    case "dec":
       return state - 1;
-    case "reset":
-      return 0;
     default:
-      throw new Error("Unexpected action");
+      throw "";
   }
-};
+}
 
 function Counter() {
-  // Returns the current state and a dispatch function to
-  // trigger an action
-  const [count, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(1, reducer);
+
   return (
     <div>
-      {count}
-      <button onClick={() => dispatch("increment")}>+1</button>
-      <button onClick={() => dispatch("decrement")}>-1</button>
-      <button onClick={() => dispatch("reset")}>reset</button>
+      <h1 className="text-2xl">The count is {state}</h1>
+      <button className="font-bold" onclick={() => dispatch("inc")}>
+        increment
+      </button>
+      <button className="font-bold" onclick={() => dispatch("dec")}>
+        decrement
+      </button>
     </div>
   );
 }
