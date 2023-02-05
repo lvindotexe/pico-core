@@ -2,21 +2,12 @@
 
 This is my tiny react clone i built in order to get a better understanding of Reactjs. its based of https://pomb.us/build-your-own-react/.
 
-#### TODO
-
-- useContext
-- maybe a statemanager like zustand
-
 # Installation
 
 right now the framework only works on vite create a vanilla Javascipt/TypeScript project with [vite](https://vitejs.dev/)
 
-replace script src in `index.html` from `/src/main.ts` to `/src/main.tsx`
-
-install react types, and the react plugin for jsx support
-
 ```
-pnpm i -D  @vitejs/plugin-react
+pnpm i @lvindotexe/pico @vitejs/plugin-react
 ```
 
 create a `vite.config.ts`
@@ -34,17 +25,14 @@ export default defineConfig({
 });
 ```
 
-replace `main.ts` with `main.tsx` run `npm run dev` and you should be good to go
+replace script src in `index.html` from `/src/main.ts` to `/src/main.tsx`
+
+replace `main.ts` with `main.tsx`, here is an example of a counter
 
 ```tsx
-import {
-  useState,
-  createRoot,
-  useMemo,
-  createPicoElement,
-} from "@lvindotexe/pico";
+import { useState, createRoot, useMemo, Pico } from "@lvindotexe/pico";
 
-/** @jsx createPicoElement */
+/** @jsx Pico.createPicoElement */
 function Counter() {
   const [state, setState] = useState(1);
 
@@ -62,8 +50,10 @@ function Counter() {
 }
 
 const root = document.getElementById("app")!;
-createRoot(root).render(<Counter />);
+Pico.createRoot(root).render(<Counter />);
 ```
+
+run `npm run dev` and you should be good to go
 
 # Hooks
 
@@ -76,7 +66,7 @@ pico only supports functional components and I've no intention to support class 
 is a reactive primitive that allows users to set variables and objects that change over time. calling the `useState` function returns a tuple that contains the value of the state, and a setter, to change the state of the value
 
 ```tsx
-import { useState, createPicoElement } from "@lvindotexe/pico";
+import { useState } from "@lvindotexe/pico";
 
 function Counter() {
   const [state, setState] = useState(1);
@@ -101,6 +91,8 @@ function Counter() {
 useEffect allows use to run specific actions when state changes.heres an example of a clock. Remember to cleanup event listeners and timers
 
 ```tsx
+import { useEffect } from "@lvindotexe/pico";
+
 function Counter() {
   const [state, setState] = useState(Date.now());
 
@@ -121,6 +113,8 @@ function Counter() {
 allows you cache the result of a calculation between re-renders. results are only recomputed when dependancies change.
 
 ```tsx
+import { useMemo } from "@lvindotexe/pico";
+
 function Counter({
   initial,
   incrementBy,
@@ -184,3 +178,10 @@ function Counter() {
 ```
 
 ## useContext
+
+# TODO
+
+- fix useState triggering twice when called for the first time
+- refractor lib to look less of a didact clone
+- useContext
+- maybe a statemanager like zustand
