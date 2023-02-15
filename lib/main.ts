@@ -119,7 +119,6 @@ function performUnitOfWork(fiber: Fiber) {
     return fiber.child;
   }
 
-  //TODO understand why this stops but the above does not
   let nextFiber = fiber;
   while (nextFiber) {
     if (nextFiber.sibling) return nextFiber.sibling;
